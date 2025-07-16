@@ -1,133 +1,106 @@
+// GamePanel.java - Vẽ và cập nhật game.
+
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package com.game.userinterface;
 
-import com.game.gameobject.MegaMan.MegaMan;
-import com.game.gameobject.MegaMan.PhysicalMap;
+import com.game.state.GameWorldState;
+import com.game.state.MenuState;
+import com.game.state.State;
 import java.awt.Color;
 import java.awt.Graphics;
-import java.awt.Graphics2D;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import java.awt.image.BufferedImage;
+
 import javax.swing.JPanel;
 
-/**
- *
- * @author lepha
- */
-public class GamePanel extends JPanel implements Runnable, KeyListener {
+// Lớp GamePanel kế thừa từ JPanel và triển khai Runnable, KeyListener để xử lý vẽ game và đầu vào.
+public class GamePanel extends JPanel implements Runnable, KeyListener{
 
-    private Thread thread;
+// Trạng thái hiện tại của game (ví dụ: menu, chơi game, v.v.)
+    State gameState;
 
-    private boolean isRunning;
-
-    private InputManager inputManager;
-
-    private BufferedImage buffImage;
-
-    private Graphics2D bufG2D;
+// Quản lý đầu vào từ bàn phím.
+    InputManager inputManager;
     
-    MegaMan megaman = new MegaMan(300, 300, 100, 100, 0.1f);
-    PhysicalMap physicalMap = new PhysicalMap(0,0);
+// Luồng riêng cho game để xử lý logic mà không làm đứng UI.
+    Thread gameThread;
 
-    public GamePanel() {
-        inputManager = new InputManager(this);
+    public boolean isRunning = true;
 
-        buffImage = new BufferedImage(GameFrame.SCREEN_WIDTH, GameFrame.SCREEN_HEIGHT, BufferedImage.TYPE_INT_ARGB);
+    public GamePanel(){
+
+        //gameState = new MenuState(this);
+        gameState = new GameWorldState(this);
+        
+        inputManager = new InputManager(gameState);
 
     }
 
+// Bắt đầu game: tạo và khởi động luồng game.
+    public void startGame(){
+        gameThread = new Thread(this);
+        gameThread.start();
+    }
+    int a = 0;
     @Override
-    public void paint(Graphics g) {
-        g.drawImage(buffImage, 0, 0, this);
-    }
-    
-    public void UpdateGame(){
-        megaman.update();
-    }
-
-    public void RenderGame() {
-        if (buffImage == null) {
-            buffImage = new BufferedImage(GameFrame.SCREEN_WIDTH, GameFrame.SCREEN_HEIGHT, BufferedImage.TYPE_INT_ARGB);
-        }
-
-        if (buffImage != null) {
-            bufG2D = (Graphics2D) buffImage.getGraphics();
-        }
-
-        if (bufG2D != null) {
-            bufG2D.setColor(Color.WHITE);
-            bufG2D.fillRect(0, 0, GameFrame.SCREEN_WIDTH, GameFrame.SCREEN_HEIGHT);
-            
-            //Draw here
-            megaman.draw(bufG2D);
-            
-            physicalMap.draw(bufG2D);
-        }
-    }
-
-    public void startGame() {
-        if (thread == null) {
-            isRunning = true;
-            thread = new Thread(this);
-            thread.start();
-        }
-    }
-
-    @Override
+// Phương thức chạy luồng game - thực hiện game loop (vòng lặp cập nhật và vẽ game).
     public void run() {
 
-        long FPS = 40;
-        long period = 1000 * 1000000 / FPS;
-        long beginTime;
+        long previousTime = System.nanoTime();
+        long currentTime;
         long sleepTime;
 
+        long period = 100000000/80;
 
-        beginTime = System.nanoTime();
-        while (isRunning) {
-            
-            // Update game
-            UpdateGame();
-            RenderGame();
+        while(isRunning){
+
+            gameState.Update();
+            gameState.Render();
+
+
+// Gọi phương thức vẽ lại game trên JPanel.
             repaint();
 
-            long deltaTime = System.nanoTime() - beginTime;
-            sleepTime = period - deltaTime;
+            currentTime = System.nanoTime();
+            sleepTime = period - (currentTime - previousTime);
+            try{
 
-            try {
-                if (sleepTime > 0) {
-                    Thread.sleep(sleepTime / 1000000);
-                } else {
-                    Thread.sleep(period / 2000000);
-                }
-            } catch (InterruptedException ex) {
-            }
+                    if(sleepTime > 0)
+                            Thread.sleep(sleepTime/1000000);
+                    else Thread.sleep(period/2000000);
 
-            beginTime = System.nanoTime();
+            }catch(Exception e){}
+
+            previousTime = System.nanoTime();
         }
 
     }
 
-    @Override
-    public void keyTyped(KeyEvent e) {
+    public void paint(Graphics g){
+
+        g.drawImage(gameState.getBufferedImage(), 0, 0, this);
 
     }
+
+    @Override
+    public void keyTyped(KeyEvent e) {}
 
     @Override
     public void keyPressed(KeyEvent e) {
-
-        inputManager.processKeyPressed(e.getKeyCode());
-
+        inputManager.setPressedButton(e.getKeyCode());
     }
 
     @Override
     public void keyReleased(KeyEvent e) {
-
-        inputManager.processKeyReleased(e.getKeyCode());
-
+        inputManager.setReleasedButton(e.getKeyCode());
     }
 
+    public void setState(State state) {
+        gameState = state;
+        inputManager.setState(state);
+    }
+    
 }
