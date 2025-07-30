@@ -77,10 +77,10 @@ public class GameWorldState extends State {
     public GameWorldState(GamePanel gamePanel){
             super(gamePanel);
         
-        texts1[0] = "We are heros, and our mission is protecting our Home\nEarth....";
-        texts1[1] = "There was a Monster from University on Earth in 10 years\n"
-                + "and we lived in the scare in that 10 years....";
-        texts1[2] = "Now is the time for us, kill it and get freedom!....";
+        texts1[0] = "Chúng ta là siêu anh hùng, và nhiệm vụ của chúng ta là bảo \nvệ ngôi nhà trái đất của mình ....";
+        texts1[1] = "Có một đám người ngoài thành tinh xâm lược từ 10 năm \n trước"
+                + "và chúng ta đã chung sống với nỗi sợ đó trong suốt \n10 năm đó....";
+        texts1[2] = "Bây giờ là thời khắc của chúng ta, tiêu diệt chúng và giành \nlấy tự do!....";
         texts1[3] = "      LET'S GO!.....";
         textTutorial = texts1[0];
 
@@ -395,16 +395,19 @@ public class GameWorldState extends State {
     public void setPressedButton(int code) {
        switch(code){
             
-            case KeyEvent.VK_DOWN:
-                megaMan.dick();
+            case KeyEvent.VK_S:
+            case KeyEvent.VK_DOWN:    
+                megaMan.duck();
                 break;
                 
-            case KeyEvent.VK_RIGHT:
+            case KeyEvent.VK_D:
+            case KeyEvent.VK_RIGHT:    
                 megaMan.setDirection(megaMan.RIGHT_DIR);
                 megaMan.run();
                 break;
                 
-            case KeyEvent.VK_LEFT:
+            case KeyEvent.VK_A:
+            case KeyEvent.VK_LEFT:    
                 megaMan.setDirection(megaMan.LEFT_DIR);
                 megaMan.run();
                 break;
@@ -437,7 +440,7 @@ public class GameWorldState extends State {
                 megaMan.jump();
                 break;
                 
-            case KeyEvent.VK_A:
+            case KeyEvent.VK_J:
                 megaMan.attack();
                 break;
                 
@@ -447,20 +450,24 @@ public class GameWorldState extends State {
     public void setReleasedButton(int code) {
         switch(code){
             
+            case KeyEvent.VK_W:
             case KeyEvent.VK_UP:
                 
                 break;
                 
+            case KeyEvent.VK_S:
             case KeyEvent.VK_DOWN:
                 megaMan.standUp();
                 break;
                 
-            case KeyEvent.VK_RIGHT:
+            case KeyEvent.VK_D:
+            case KeyEvent.VK_RIGHT:    
                 if(megaMan.getSpeedX() > 0)
                     megaMan.stopRun();
                 break;
                 
-            case KeyEvent.VK_LEFT:
+            case KeyEvent.VK_A:
+            case KeyEvent.VK_LEFT:    
                 if(megaMan.getSpeedX() < 0)
                     megaMan.stopRun();
                 break;
@@ -477,7 +484,7 @@ public class GameWorldState extends State {
                 
                 break;
                 
-            case KeyEvent.VK_A:
+            case KeyEvent.VK_J:
                 
                 break;
             case KeyEvent.VK_ESCAPE:

@@ -23,7 +23,7 @@ public abstract class Human extends ParticularObject{
     
     public abstract void jump();
     
-    public abstract void dick();
+    public abstract void duck();
     
     public abstract void standUp();
     

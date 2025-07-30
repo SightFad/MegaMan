@@ -103,7 +103,7 @@ public class FinalBoss extends Human {
     }
 
     @Override
-    public void dick() {
+    public void duck() {
     
     
     }

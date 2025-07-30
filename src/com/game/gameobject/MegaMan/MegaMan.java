@@ -13,7 +13,7 @@ import java.awt.Rectangle;
 
 public class MegaMan extends Human {
 
-    public static final int RUNSPEED = 3;
+    public static final int RUNSPEED = 5;
     
     private Animation runForwardAnim, runBackAnim, runShootingForwarAnim, runShootingBackAnim;
     private Animation idleForwardAnim, idleBackAnim, idleShootingForwardAnim, idleShootingBackAnim;
@@ -30,14 +30,14 @@ public class MegaMan extends Human {
     private AudioClip shooting1;
     
     public MegaMan(float x, float y, GameWorldState gameWorld) {
-        super(x, y, 70, 90, 0.1f, 100, gameWorld);
+        super(x, y, 70, 90, 0.2f, 100, gameWorld);
         
         shooting1 = CacheDataLoader.getInstance().getSound("bluefireshooting");
         hurtingSound = CacheDataLoader.getInstance().getSound("megamanhurt");
         
         setTeamType(LEAGUE_TEAM);
 
-        setTimeForNoBehurt(1500*100000);
+        setTimeForNoBehurt(3000*100000);
         
         runForwardAnim = CacheDataLoader.getInstance().getAnimation("run");
         runBackAnim = CacheDataLoader.getInstance().getAnimation("run");
@@ -239,15 +239,15 @@ public class MegaMan extends Human {
 
         }
         
-        //drawBoundForCollisionWithMap(g2);
+        drawBoundForCollisionWithMap(g2);
         //drawBoundForCollisionWithEnemy(g2);
     }
 
     @Override
     public void run() {
         if(getDirection() == LEFT_DIR)
-            setSpeedX(-3);
-        else setSpeedX(3);
+            setSpeedX(-5);
+        else setSpeedX(5);
     }
 
     @Override
@@ -255,7 +255,7 @@ public class MegaMan extends Human {
 
         if(!getIsJumping()){
             setIsJumping(true);
-            setSpeedY(-6.0f);           
+            setSpeedY(-7.0f);           
             flyBackAnim.reset();
             flyForwardAnim.reset();
         }
@@ -267,13 +267,13 @@ public class MegaMan extends Human {
             rectLeftWall.x -= 1;
             
             if(getGameWorld().physicalMap.haveCollisionWithRightWall(rectRightWall)!=null && getSpeedX() > 0){
-                setSpeedY(-5.0f);
+                setSpeedY(-7.0f);
                 //setSpeedX(-1);
                 flyBackAnim.reset();
                 flyForwardAnim.reset();
                 //setDirection(LEFT_DIR);
             }else if(getGameWorld().physicalMap.haveCollisionWithLeftWall(rectLeftWall)!=null && getSpeedX() < 0){
-                setSpeedY(-5.0f);
+                setSpeedY(-7.0f);
                 //setSpeedX(1);
                 flyBackAnim.reset();
                 flyForwardAnim.reset();
@@ -284,7 +284,7 @@ public class MegaMan extends Human {
     }
 
     @Override
-    public void dick() {
+    public void duck() {
         if(!getIsJumping())
             setIsDicking(true);
     }

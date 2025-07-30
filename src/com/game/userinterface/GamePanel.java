@@ -53,7 +53,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener{
         long currentTime;
         long sleepTime;
 
-        long period = 100000000/80;
+        long period = 1000000000/80;
 
         while(isRunning){
 

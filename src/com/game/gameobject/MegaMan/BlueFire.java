@@ -15,7 +15,7 @@ public class BlueFire extends Bullet{
     private Animation forwardBulletAnim, backBulletAnim;
     
     public BlueFire(float x, float y, GameWorldState gameWorld) {
-        super(x, y, 60, 30, 1.0f, 10, gameWorld);
+        super(x, y, 60, 30, 1.0f, 30, gameWorld);
         forwardBulletAnim = CacheDataLoader.getInstance().getAnimation("bluefire");
         backBulletAnim = CacheDataLoader.getInstance().getAnimation("bluefire");
         backBulletAnim.flipAllImage();
