@@ -6,9 +6,9 @@
  */
 package com.game.userinterface;
 
-import java.com.game.state.GameWorldState;
-import java.com.game.state.MenuState;
-import java.com.game.state.State;
+import com.game.state.GameWorldState;
+import com.game.state.MenuState;
+import com.game.state.State;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.event.KeyEvent;
