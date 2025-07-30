@@ -6,7 +6,7 @@
  */
 package com.game.userinterface;
 
-import com.game.effect.CacheDataLoader;
+import java.com.game.effect.CacheDataLoader;
 import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.io.IOException;

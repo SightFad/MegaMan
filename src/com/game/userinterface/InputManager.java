@@ -6,8 +6,8 @@
  */
 package com.game.userinterface;
 
-import com.game.state.GameWorldState;
-import com.game.state.State;
+import java.com.game.state.GameWorldState;
+import java.com.game.state.State;
 import java.awt.event.KeyEvent;
 
 // Lớp nhận và xử lý sự kiện bàn phím.
